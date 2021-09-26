@@ -6,7 +6,7 @@ $(document).ready(function() {
 
 	$(window).on('action:ajaxify.end', function() {
 
-		if (app.template === 'category' && app.user.uid) {
+		if (ajaxify.data.template.category && app.user.uid) {
 			
 			var leaveHtml = '<button type="button" class="btn btn-default btn-danger leave"><i class="fa fa-times"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:leave]]</span></button>';
 			var joinHtml = '<button type="button" class="btn btn-default btn-success join"><i class="fa fa-plus"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:join]]</span></button>';

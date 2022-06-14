@@ -4,13 +4,23 @@
         "category-join-group": "public"
     },
     "hooks": [
-        { "hook": "static:app.load", "method": "init"},
-        { "hook": "filter:admin.header.build", "method": "adminMenu"},
-        { "hook": "action.user.delete", "method": "onUserDelete"}
+        {
+            "hook": "static:app.load",
+            "method": "init"
+        },
+        {
+            "hook": "action.user.delete",
+            "method": "onUserDelete"
+        },
+        {
+            "hook": "filter:widgets.getWidgets",
+            "method": "getWidgets"
+        },
+        {
+            "hook": "filter:widget.render:category-join-group",
+            "method": "renderCategoryJoinWidget"
+        }
     ],
-    "scripts": [
-		"public/scripts/client.js"
-	],
     "templates": "./public/templates",
     "languages": "languages",
     "defaultLang": "en-GB"

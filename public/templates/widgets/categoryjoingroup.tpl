@@ -1,9 +1,11 @@
 {{{ if categoryGroupExists }}}
 
 <div class="join-group-widget btn-group">
-        <button type="button" id="categoryjoin" class="btn btn-success categoryjoin {{{ if (categoryGroupIsMember || categoryGroupisPending) }}}hidden{{{ end }}}"><i class="fa fa-plus"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:join]]</span></button>
-        <button type="button" id="categoryleave" class="btn btn-danger categoryleave {{{ if !categoryGroupIsMember }}}hidden{{{ end }}}"><i class="fa fa-times"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:leave]]</span></button>
-        <button type="button" id="categorypending" class="btn btn-warning categorypending {{{ if !categoryGroupisPending  }}}hidden{{{ end }}}" disabled><i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:pending]]</span></button>
+        <button type="button" id="categoryjoinaction" class="btn  categoryjoin {{{ if !(categoryGroupIsMember || categoryGroupisPending) }}}btn-success{{{ end }}} {{{ if categoryGroupIsMember }}}btn-danger{{{ end }}} {{{ if categoryGroupisPending  }}}btn-warning" disabled="true{{{ end }}}">
+            <span id="categoryJoinText" class="{{{ if (categoryGroupIsMember || categoryGroupisPending) }}}hidden{{{ end }}}"><i class="fa fa-plus"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:join]]</span></span>
+            <span id="categoryLeaveText" class="{{{ if !categoryGroupIsMember }}}hidden{{{ end }}}"><i class="fa fa-times"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:leave]]</span></span>
+            <span id="categoryPendingText class="{{{ if !categoryGroupisPending }}}hidden{{{ end }}}"><i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:pending]]</span></span>
+        </button>
         <a type="button" id="goToGroup" class="btn btn-default" href="{relative_path}/groups/{groupSlug}"></i><i class="fa fa-users"></i></a>
 </div>
 
@@ -12,29 +14,37 @@
         function() {
             async function registerCategoryGroupEvents() {
                 const [bootbox, translator] = await app.require(['bootbox', 'translator']);
-                const categoryjoinbutton = document.getElementById("categoryjoin");
-                const categoryleavebutton = document.getElementById("categoryleave");
-                const categorypendingbutton = document.getElementById("categorypending");
-                async function handleCategoryJoin() {
-                    const status = await socket.emit("plugins.categoryJoinGroup.join", { cid: {cid}  });
-                    categoryjoinbutton.classList.add("hidden");
-                    if (status == "joined") {
-                        categoryleavebutton.classList.remove("hidden");
-                    } else if (status == "pending") {
-                        categorypendingbutton.classList.remove("hidden");
+                const actionbutton = document.getElementById("categoryjoinaction");
+
+                const joinText = document.getElementById("categoryJoinText");
+                const leaveText = document.getElementById("categoryLeaveText");
+                const pendingText = document.getElementById("categoryPendingText");
+                async function handleCategoryAction() {
+                    if (actionbutton.classList.contains("btn-success")) {
+                        const status = await socket.emit("plugins.categoryJoinGroup.join", { cid: {cid}  });
+                        actionbutton.classList.remove("btn-success");
+                        joinText.classList.add("hidden");
+                        if (status == "joined") {
+                            actionbutton.classList.add("btn-danger");
+                            leaveText.classList.remove("hidden");
+                        } else if (status == "pending") {
+                            actionbutton.classList.add("btn-warning");
+                            pendingText.classList.remove("hidden");
+                        }
+                    } else if (actionbutton.classList.contains("btn-danger") {
+                        bootbox.confirm(await translator.translate("[[categoryjoingroup:confirm]]"), async (result) => {
+                            if (!result) return;
+                            await socket.emit("plugins.categoryJoinGroup.leave", { cid: {cid} });
+                            actionbutton.classList.remove("btn-danger");
+                            leaveText.classList.add("hidden");
+                            actionbutton.classList.remove("btn-warning");
+                            pendingText.classList.add("hidden");
+                            actionbutton.classList.add("btn-success");
+                            joinText.classList.remove("hidden");
+                        })
                     }
                 }
-                async function handleCategoryLeave() {
-                    bootbox.confirm(await translator.translate("[[categoryjoingroup:confirm]]"), async (result) => {
-                        if (!result) return;
-                        await socket.emit("plugins.categoryJoinGroup.leave", { cid: {cid} });
-                        categoryleavebutton.classList.add("hidden");
-                        categorypendingbutton.classList.add("hidden");
-                        categoryjoinbutton.classList.remove("hidden");
-                    })
-                }
-                categoryjoinbutton.addEventListener("click", handleCategoryJoin);
-                categoryleavebutton.addEventListener("click", handleCategoryLeave);
+                actionbutton.addEventListener("click", handleCategoryAction);
             }
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', registerCategoryGroupEvents);

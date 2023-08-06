@@ -31,7 +31,7 @@
                             actionbutton.classList.add("btn-warning");
                             pendingText.classList.remove("hidden");
                         }
-                    } else if (actionbutton.classList.contains("btn-danger") {
+                    } else if (actionbutton.classList.contains("btn-danger")) {
                         bootbox.confirm(await translator.translate("[[categoryjoingroup:confirm]]"), async (result) => {
                             if (!result) return;
                             await socket.emit("plugins.categoryJoinGroup.leave", { cid: {cid} });

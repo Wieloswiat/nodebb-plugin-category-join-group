@@ -1,6 +1,6 @@
 {
   "name": "nodebb-plugin-category-join-group",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Plugin that allows you to join groups (of the same name a category) from the category view",
   "main": "index.js",
   "repository": {

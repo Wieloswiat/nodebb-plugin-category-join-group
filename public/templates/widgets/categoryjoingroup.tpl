@@ -30,6 +30,7 @@
                         } else if (status == "pending") {
                             actionbutton.classList.add("btn-warning");
                             pendingText.classList.remove("hidden");
+                            actionbutton.setAttribute("disabled", "disabled");
                         }
                     } else if (actionbutton.classList.contains("btn-danger")) {
                         bootbox.confirm(await translator.translate("[[categoryjoingroup:confirm]]"), async (result) => {
@@ -38,6 +39,7 @@
                             actionbutton.classList.remove("btn-danger");
                             leaveText.classList.add("hidden");
                             actionbutton.classList.remove("btn-warning");
+                            element.removeAttribute("disabled");
                             pendingText.classList.add("hidden");
                             actionbutton.classList.add("btn-success");
                             joinText.classList.remove("hidden");

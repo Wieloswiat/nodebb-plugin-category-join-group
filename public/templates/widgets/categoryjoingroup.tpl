@@ -4,7 +4,7 @@
         <button type="button" id="categoryjoinaction" class="btn  categoryjoin {{{ if !(categoryGroupIsMember || categoryGroupisPending) }}}btn-success{{{ end }}} {{{ if categoryGroupIsMember }}}btn-danger{{{ end }}} {{{ if categoryGroupisPending  }}}btn-warning" disabled="true{{{ end }}}">
             <span id="categoryJoinText" class="{{{ if (categoryGroupIsMember || categoryGroupisPending) }}}hidden{{{ end }}}"><i class="fa fa-plus"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:join]]</span></span>
             <span id="categoryLeaveText" class="{{{ if !categoryGroupIsMember }}}hidden{{{ end }}}"><i class="fa fa-times"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:leave]]</span></span>
-            <span id="categoryPendingText class="{{{ if !categoryGroupisPending }}}hidden{{{ end }}}"><i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:pending]]</span></span>
+            <span id="categoryPendingText" class="{{{ if !categoryGroupisPending }}}hidden{{{ end }}}"><i class="fa fa-clock-o"></i><span class="hidden-sm hidden-xs"> [[categoryjoingroup:pending]]</span></span>
         </button>
         <a type="button" id="goToGroup" class="btn btn-default" href="{relative_path}/groups/{groupSlug}"></i><i class="fa fa-users"></i></a>
 </div>
